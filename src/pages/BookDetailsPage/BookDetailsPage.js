@@ -13,11 +13,14 @@ const BookDetailPage = () => {
           `https://www.googleapis.com/books/v1/volumes/${bookId}`
         );
 
-        // this should get information from G-Api
+        // Extract the relevant information from the API response
+        const volumeInfo = response.data.volumeInfo;
+
         const book = {
-          title: response.data.volumeInfo.title,
-          authors: response.data.volumeInfo.authors,
-          // Add other properties as needed
+          thumbnail: volumeInfo.imageLinks?.thumbnail || null,
+          title: volumeInfo.title,
+          authors: volumeInfo.authors || [],
+          description: volumeInfo.description || "No description available",
         };
 
         setBookDetails(book);
@@ -39,12 +42,21 @@ const BookDetailPage = () => {
   return (
     <div>
       <h2>Book Detail Page</h2>
+      {bookDetails.thumbnail && (
+        <img src={bookDetails.thumbnail} alt="Book Thumbnail" />
+      )}
+      <button>Favorite</button>
       <p>
         <strong>Title:</strong> {bookDetails.title}
       </p>
       <p>
         <strong>Authors:</strong>{" "}
-        {bookDetails.authors ? bookDetails.authors.join(", ") : "N/A"}
+        {bookDetails.authors.length > 0
+          ? bookDetails.authors.join(", ")
+          : "N/A"}
+      </p>
+      <p>
+        <strong>Description:</strong> {bookDetails.description}
       </p>
     </div>
   );

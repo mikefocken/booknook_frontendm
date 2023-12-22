@@ -8,10 +8,7 @@ const ResultsList = ({ results }) => {
       <ul>
         {results.map((result, index) => (
           <li key={index}>
-            <Link to={`/book/${result.id}`}>
-              <strong>Authors:</strong>{" "}
-              {result.authors ? result.authors.join(", ") : "N/A"}
-            </Link>
+            <Link to={`/book/${result.id}`}>{result.title}</Link>
           </li>
         ))}
       </ul>

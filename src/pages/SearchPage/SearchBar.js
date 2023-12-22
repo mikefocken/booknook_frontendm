@@ -14,8 +14,8 @@ const SearchBar = ({ setResults }) => {
       // Extract the relevant information from the API response
       const books = response.data.items.map((item) => {
         return {
+          id: item.id, // Include the book ID for routing
           title: item.volumeInfo.title,
-          authors: item.volumeInfo.authors,
         };
       });
 
