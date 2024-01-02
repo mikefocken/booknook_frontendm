@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import ReviewList from "./ReviewList.js"; 
+
 
 const BookDetailPage = () => {
   const { bookId } = useParams();
@@ -58,6 +60,7 @@ const BookDetailPage = () => {
       <p>
         <strong>Description:</strong> {bookDetails.description}
       </p>
+      <ReviewList bookId={bookId} />
     </div>
   );
 };
