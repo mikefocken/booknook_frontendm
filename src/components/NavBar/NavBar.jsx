@@ -15,6 +15,12 @@ const Navbar = () => {
             <b>BookNook</b>
           </Link>
         </li>
+        <li>
+          <Link to="/Favorites">
+            <span>My Favorites</span>
+          </Link>
+        </li>
+
         <li></li>
         <Link to="/search">
           <span>Search</span>

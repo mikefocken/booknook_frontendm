@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import ReviewList from "./ReviewList.js"; 
-
+import ReviewList from "./ReviewList.js";
 
 const BookDetailPage = () => {
   const { bookId } = useParams();
@@ -15,7 +14,6 @@ const BookDetailPage = () => {
           `https://www.googleapis.com/books/v1/volumes/${bookId}`
         );
 
-        // Extract the relevant information from the API response
         const volumeInfo = response.data.volumeInfo;
 
         const book = {
@@ -47,7 +45,7 @@ const BookDetailPage = () => {
       {bookDetails.thumbnail && (
         <img src={bookDetails.thumbnail} alt="Book Thumbnail" />
       )}
-      <button>Favorite</button>
+
       <p>
         <strong>Title:</strong> {bookDetails.title}
       </p>

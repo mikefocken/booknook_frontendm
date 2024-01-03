@@ -34,13 +34,10 @@ const ReviewList = ({ bookId }) => {
     fetchReviewsAndFavorites();
   }, [bookId, token]);
   const handleFavoriteToggle = async () => {
-    // You can implement the logic to update the favorite status on the server
-    // For simplicity, let's assume there's an API endpoint to toggle the favorite status
     try {
-      // Update the isBookFavorited state locally for a quick UI response
       setIsBookFavorited((prev) => !prev);
+      console.log("Favorite Button Clicked. Current State:", !isBookFavorited);
 
-      // You should also send a request to the server to update the favorite status
       await axios.post(
         `https://localhost:5001/api/BookDetails/${bookId}/toggleFavorite`,
         {},
@@ -55,7 +52,6 @@ const ReviewList = ({ bookId }) => {
     }
   };
 
-
   return (
     <div>
       <p>Average Rating: {averageRating}</p>
@@ -63,10 +59,24 @@ const ReviewList = ({ bookId }) => {
 
       <ul>
         {reviews.map((review) => (
-          <li key={review.id}>{review.owner.userName}:{review.text}</li>
+          <li key={review.id}>
+            {review.owner.userName}:{review.text}
+          </li>
         ))}
       </ul>
-      
+      {console.log('isfavorite', isBookFavorited)}
+      <button
+        onClick={handleFavoriteToggle}
+        style={{
+          backgroundColor: isBookFavorited ? "green" : "gray",
+          color: "blue",
+          padding: "8px",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        {isBookFavorited ? "Favorited" : "Favorite"}
+      </button>
     </div>
   );
 };
