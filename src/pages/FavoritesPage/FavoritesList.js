@@ -6,7 +6,6 @@ const FavoritesList = () => {
   const [token, setToken] = useState("");
 
   useEffect(() => {
-  
     const fetchFavorites = async () => {
       try {
         const response = await axios.get(
@@ -49,3 +48,4 @@ const FavoritesList = () => {
 };
 
 export default FavoritesList;
+

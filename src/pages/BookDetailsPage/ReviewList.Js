@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 
-const ReviewList = ({ bookId }) => {
+const ReviewList = ({ bookId, bookDetails }) => {
   const [user, token] = useAuth();
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
@@ -33,22 +33,26 @@ const ReviewList = ({ bookId }) => {
 
     fetchReviewsAndFavorites();
   }, [bookId, token]);
+
   const handleFavoriteToggle = async () => {
     try {
-      setIsBookFavorited((prev) => !prev);
       console.log("Favorite Button Clicked. Current State:", !isBookFavorited);
 
-      await axios.post(
-        `https://localhost:5001/api/BookDetails/${bookId}/toggleFavorite`,
-        {},
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const favoriteData = {
+        bookId: bookId,
+        title: bookDetails.title,
+        thumbnailUrl: bookDetails.thumbnail,
+      };
+
+      await axios.post("https://localhost:5001/api/favorites/", favoriteData, {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+      });
     } catch (error) {
       console.error("Error toggling favorite status", error);
+      setIsBookFavorited((prevIsBookFavorited) => !prevIsBookFavorited);
     }
   };
 
@@ -64,7 +68,7 @@ const ReviewList = ({ bookId }) => {
           </li>
         ))}
       </ul>
-      {console.log('isfavorite', isBookFavorited)}
+      {console.log("isfavorite", isBookFavorited)}
       <button
         onClick={handleFavoriteToggle}
         style={{

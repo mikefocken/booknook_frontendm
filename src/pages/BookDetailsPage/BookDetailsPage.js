@@ -58,7 +58,7 @@ const BookDetailPage = () => {
       <p>
         <strong>Description:</strong> {bookDetails.description}
       </p>
-      <ReviewList bookId={bookId} />
+      <ReviewList bookDetails={bookDetails} bookId={bookId} />
     </div>
   );
 };
