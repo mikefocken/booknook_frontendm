@@ -21,11 +21,12 @@ const ReviewList = ({ bookId, bookDetails }) => {
         );
         console.log(response.data);
         const { reviews, averageRating, isFavorited } = response.data;
-
         setReviews(reviews);
         console.log("Reviews:", reviews);
         setAverageRating(averageRating);
         setIsBookFavorited(isFavorited);
+
+        
       } catch (error) {
         console.error("Error fetching reviews and favorites", error);
       }

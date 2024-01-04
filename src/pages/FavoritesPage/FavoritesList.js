@@ -1,51 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
+import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 
-const FavoritesList = () => {
+const FavoritesPage = () => {
+  const [user, token] = useAuth();
   const [favorites, setFavorites] = useState([]);
-  const [token, setToken] = useState("");
 
   useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const response = await axios.get(
-          "https://localhost:5001/api/favorites/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        const formattedFavorites = response.data.map((favorite) => ({
-          title: favorite.title,
-          thumbnail: favorite.thumbnailUrl,
-        }));
-
-        setFavorites(formattedFavorites);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
     fetchFavorites();
   }, [token]);
+
+  const fetchFavorites = async () => {
+    try {
+      let response = await axios.get("https://localhost:5001/api/favorites/", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      setFavorites(response.data);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
 
   return (
     <div>
       <h1>My Favorites</h1>
-      <ul>
-        {favorites.map((favorite, index) => (
-          <li key={index}>
+      {console.log(user)}
+      {favorites.length > 0 ? (
+        favorites.map((favorite) => (
+          <div key={favorite.id}>
             <h3>{favorite.title}</h3>
             <img src={favorite.thumbnail} alt={favorite.title} />
-          </li>
-        ))}
-      </ul>
+          </div>
+        ))
+      ) : (
+        <p>You have no favorites yet.</p>
+      )}
     </div>
   );
 };
 
-export default FavoritesList;
-
+export default FavoritesPage;

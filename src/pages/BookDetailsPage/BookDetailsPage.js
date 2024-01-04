@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ReviewList from "./ReviewList.js";
+import ReviewForm from "./ReviewForm";
+import useAuth from "../../hooks/useAuth";
 
 const BookDetailPage = () => {
+  const [user, token] = useAuth();
   const { bookId } = useParams();
   const [bookDetails, setBookDetails] = useState(null);
 
@@ -35,6 +38,33 @@ const BookDetailPage = () => {
     fetchBookDetails();
   }, [bookId]);
 
+  const handleReviewSubmit = async ({ text, rating }) => {
+    try {
+      // Define your authentication token (replace with your actual token)
+      const token = "YOUR_AUTH_TOKEN";
+
+      // Send POST request to your backend API with the review data and headers
+      await axios.post(
+        "https://localhost:5001/api/reviews",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        },
+        {
+          bookId: bookId,
+          text: text,
+          rating: rating,
+        }
+      );
+
+      // Optionally, you can refresh the reviews list after a successful submission
+      // fetchReviewsAndRefresh(); // You might need to implement this function
+    } catch (error) {
+      console.error("Error submitting review", error);
+    }
+  };
+
   if (!bookDetails) {
     return <div>Loading...</div>;
   }
@@ -59,6 +89,7 @@ const BookDetailPage = () => {
         <strong>Description:</strong> {bookDetails.description}
       </p>
       <ReviewList bookDetails={bookDetails} bookId={bookId} />
+      <ReviewForm onSubmit={handleReviewSubmit} />
     </div>
   );
 };
